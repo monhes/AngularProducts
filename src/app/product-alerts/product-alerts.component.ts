@@ -10,9 +10,18 @@ export class ProductAlertsComponent implements OnInit {
 
   @Input() product!: Product;
   @Output() notify = new EventEmitter();
+  count = 0;
   constructor() { }
 
   ngOnInit() {
   }
 
+  increment() {
+    this.count++;
+    this.notify.emit(this.count);
+  }
+  decrement() {
+    this.count--;
+    this.notify.emit(this.count);
+  }
 }
