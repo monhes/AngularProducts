@@ -12,6 +12,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { ProductAlertsComponent } from './product-alerts/product-alerts.component';
 import { CartComponent } from './cart/cart.component';
 import { ShippingComponent } from './shipping/shipping.component';
+import { TestRequestModule } from './test-request/test-request.module';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ShippingComponent } from './shipping/shipping.component';
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    TestRequestModule,
     AppRoutingModule,
     RouterModule.forRoot([
       {path: '', component: ProductListComponent},
