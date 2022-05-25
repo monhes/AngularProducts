@@ -13,7 +13,8 @@ export class TestRequestGetComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<Booklist[]>("https://anapioficeandfire.com/api/characters").subscribe(response => {console.log('response',response); this.Booklist = response})
+   /* https://anapioficeandfire.com/api/characters*/
+    this.http.get<Booklist[]>("").subscribe(response => {console.log('response',response); this.Booklist = response})
   }
 
 }

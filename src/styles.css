@@ -70,7 +70,7 @@
   }
   
   /* Button */
-  .button, button {
+  .button /*, button*/  {
     display: inline-flex;
     align-items: center;
     padding: 8px 16px;
@@ -137,7 +137,18 @@
     background-color: #EEEEEE;
   }
   
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,10);
+    transition: 0.3s;
+    
+  }
   
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /*cursor pointer for link*/
+  .pointer {cursor: pointer;}
   /*
   Copyright Google LLC. All Rights Reserved.
   Use of this source code is governed by an MIT-style license that
