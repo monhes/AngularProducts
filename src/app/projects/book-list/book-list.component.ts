@@ -11,8 +11,6 @@ export class BookListComponent implements OnInit {
 
   Booklist: Booklist[] = [];
   PickedUpBook:  Booklist[] = [];
-  Findaliases: string = "";
-  searchText:any;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -22,19 +20,22 @@ export class BookListComponent implements OnInit {
 
   
   loadBook(event:any){
+    
     const input: HTMLInputElement = event.target;
     let pick:number = 0;
+    //clear list when no search input
+    this.PickedUpBook.forEach((elemnt,i)=>{
+      this.PickedUpBook.splice(i) 
+      i++;
+    })
+    //put object into variable when string search is matched
     this.Booklist.forEach((element,i=0) => {
-      this.PickedUpBook = [];
         if(element.aliases.toString().toLocaleLowerCase().search(input.value.toLocaleLowerCase()) != -1 && input.value != ""){
           this.PickedUpBook[pick] = this.Booklist[i];
           pick++;
         }
-        i += 1;
+        i++;
      });  
-  }
-  alert(){
-    console.log(this.PickedUpBook)
-  }
-
+    }
 }
+
