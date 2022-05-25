@@ -1,8 +1,7 @@
 <p>book-list works!</p>
  
 <div>
-<input type="text"  (input)="loadBook($event)" placeholder="Search Book alias . . .">
-<button (click)="alert()"></button>
+<input type="text"  (input)="loadBook($event)" placeholder="Search Book alias . . ."> 
 <ul *ngIf="PickedUpBook != null">
    <li *ngFor="let picked of PickedUpBook">
     Book alias: {{picked.aliases}} 
