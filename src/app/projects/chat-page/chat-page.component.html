@@ -1,1 +1,12 @@
-<p>chat-page works!</p>
+ 
+
+    <div *ngFor="let chat of userMessage" class="chatMessage">
+      Message : => {{chat.user}} : {{chat.message}}
+    </div>
+    <div class='messageInput'>
+      <form [formGroup]="checkoutForm" (ngSubmit)="sendMessage()">
+        <input type="text" id="htUsername" formControlName="htUsername" placeholder="Username">
+        <input type="text" id="htMessage" formControlName="htMessage" placeholder="message...">
+        <button class="button" type="submit">send message</button>
+      </form>  
+    </div> 

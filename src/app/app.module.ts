@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,8 +19,13 @@ import { BookListComponent } from './projects/book-list/book-list.component';
 import { ProjectsMainComponent } from './projects/projects-main/projects-main.component';
 import { ChatPageComponent } from './projects/chat-page/chat-page.component';
 import { CachingInterceptor } from './interceptors/caching.interceptor';
-
-
+import { MoviesCRUDComponent } from './projects/movies-crud/movies-crud.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//angularMaterial
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,9 +38,11 @@ import { CachingInterceptor } from './interceptors/caching.interceptor';
     TopSecondBarComponent,
     BookListComponent,
     ProjectsMainComponent,
-    ChatPageComponent
+    ChatPageComponent,
+    MoviesCRUDComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -49,8 +56,14 @@ import { CachingInterceptor } from './interceptors/caching.interceptor';
       {path: 'testrequestget', component: TestRequestGetComponent},
       {path:'mainprojectsmenu',component:ProjectsMainComponent},
       {path:'projects/booklist',component:BookListComponent},
-      {path:'projects/chatpage',component:ChatPageComponent}
-    ])
+      {path:'projects/chatpage',component:ChatPageComponent},
+      {path: 'projects/moviesCRUD', component:MoviesCRUDComponent}
+    ]),
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,

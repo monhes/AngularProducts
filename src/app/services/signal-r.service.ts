@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-//import * as signalR from '@microsoft/signalr';
-import { ChartModel } from './chartmodel.model';
+import * as signalR from '@microsoft/signalr';
+import { UserMessage } from '../projects/chat-page/user-message';
+import { ChartModel } from './chartmodel.model'; 
+import { DotnetSignalR } from './local-path.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
+public serUserMessage: UserMessage[] = [];
 public data: ChartModel[] = [];
-  /*hubConnection:signalR.HubConnection = new signalR.HubConnectionBuilder()
-  .withUrl('https://localhost:7263/chart')
+public setMessage: any;
+public hubConnection:signalR.HubConnection = new signalR.HubConnectionBuilder()
+  .withUrl(DotnetSignalR)
   .build();
    
   public startConection =()=>{
     console.log('start connection')
-    this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:7263/chart')
-    .build()
      this.hubConnection
     .start()
     .then(()=>console.log('connection Started'))
@@ -26,6 +27,5 @@ public data: ChartModel[] = [];
       this.data = data
       console.log(data);
     })
-  }*/
-  constructor() {}
+  } 
 }

@@ -16,16 +16,16 @@ export class TestRequestPeopleListComponent implements OnInit {
   ngOnInit(): void {
     //https://monhes.github.io/PeopleListAPI/PeopleList.json
     this.http.get<PeopleList[]>("").subscribe(response => {console.log('response',response);this.PeopleList = response})
-    //this.signalRService.startConection();
-    //this.signalRService.addTransferDataListener();
-    //this.startHttpRequest();
+    this.signalRService.startConection();
+    this.signalRService.addTransferDataListener();
+     
   
   }
   private startHttpRequest = () => {
-    //this.http.get('https://localhost:7263/api/chart').subscribe(res => console.log(res))
+    this.http.get('https://localhost:7263/api/chart').subscribe(res => console.log(res))
   }
   noticeServer(){
     console.log("client clicked");
-    //this.signalRService.hubConnection.send("ReceiveClicked", "message from client");
+    this.signalRService.hubConnection.send("ReceiveClicked", "message from client");
   }
 }
