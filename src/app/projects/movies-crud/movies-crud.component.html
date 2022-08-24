@@ -17,6 +17,7 @@
                         </div> 
                         </div> 
                         <button class="pointer" (click)="deleteConfirmations(movie.id)">delete</button>
+                        <button class="pointer" (click)="openDialog(movie.id)">Open dialog</button>
                 </div>
             </div> 
     </div>
@@ -62,6 +63,7 @@
         </form>
     </div>
 </div> 
+
 
 <!-- FormArray
 <form [formGroup]="myArrayForm">

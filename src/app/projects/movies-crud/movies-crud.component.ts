@@ -6,6 +6,9 @@ import { from, Observable } from 'rxjs';
 import { Movies } from 'src/app/Models/movies';
 import { DotnetPath } from 'src/app/services/local-path.service'
 import { LocalPathService } from 'src/app/services/local-path.service'
+import {MatDialog} from '@angular/material/dialog';
+import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
+
 
 @Component({
   selector: 'app-movies-crud',
@@ -19,9 +22,9 @@ export class MoviesCRUDComponent implements OnInit {
   movieForm:FormGroup; 
   moviesList: any = []
   
-  MovieApiPath:string = DotnetPath+'api/Moviesapi'
+  MovieApiPath:string = this.path.AzurePath+'api/Moviesapi/'
 
-  constructor(private http: HttpClient, private fb:FormBuilder) { 
+  constructor(private http: HttpClient, private fb:FormBuilder,public dialog: MatDialog,public path:LocalPathService) { 
    }
 
   ngOnInit(): void { 
@@ -79,19 +82,30 @@ export class MoviesCRUDComponent implements OnInit {
    deleteConfirmations(deleteId:any){
     if(confirm("Are you sure to delete ")) {
       let tempurl: string = this.MovieApiPath+deleteId 
-      this.http.delete(tempurl).subscribe(response => {this.getMovies();})   
+      this.http.delete(tempurl).subscribe(response => {this.getMovies(); console.warn(deleteId)})   
     }
   }
 
   postMovies(form:any){
     console.log(form)
     let tempurl: string = this.MovieApiPath
-    this.http.post(tempurl,form).subscribe((data)=>{this.getMovies();})
+    this.http.post(tempurl,form).subscribe((data)=>{this.getMovies();}) 
     this.movieForm.reset();
   }
+
 
   updateMovies(){
     
   } 
     
+
+  openDialog(id:number) {
+    let tempurl: string = this.MovieApiPath + id
+    const dialogRef = this.dialog.open(MovieDetailComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      result.id = id 
+      this.http.put(tempurl,result).subscribe((data)=>{this.getMovies()})
+    });
+  }
+
 }

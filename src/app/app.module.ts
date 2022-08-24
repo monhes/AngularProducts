@@ -21,11 +21,15 @@ import { ChatPageComponent } from './projects/chat-page/chat-page.component';
 import { CachingInterceptor } from './interceptors/caching.interceptor';
 import { MoviesCRUDComponent } from './projects/movies-crud/movies-crud.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MovieDetailComponent } from './projects/movie-detail/movie-detail.component';
+
 //angularMaterial
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +43,8 @@ import {MatIconModule} from '@angular/material/icon';
     BookListComponent,
     ProjectsMainComponent,
     ChatPageComponent,
-    MoviesCRUDComponent
+    MoviesCRUDComponent,
+    MovieDetailComponent
   ],
   imports: [
     FormsModule,
@@ -57,13 +62,15 @@ import {MatIconModule} from '@angular/material/icon';
       {path:'mainprojectsmenu',component:ProjectsMainComponent},
       {path:'projects/booklist',component:BookListComponent},
       {path:'projects/chatpage',component:ChatPageComponent},
-      {path: 'projects/moviesCRUD', component:MoviesCRUDComponent}
+      {path: 'projects/moviesCRUD', component:MoviesCRUDComponent},
+      {path: 'moviedetail/:movieId', component: MovieDetailComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
+    MatDialogModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,

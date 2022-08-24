@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 export class LocalPathService {
 
   constructor() { }
-  AzurePath:string = "https://thudentrylevel.azurewebsites.net/"
-  AzurePathSignalR:string = "https://thudentrylevel.azurewebsites.net/chart"
-  LocalPath:string = "https://localhost:7263/"
-  LocalPathSignalR:string = "https://localhost:7263/chart"
+  public AzurePath:string = "https://thudentrylevel.azurewebsites.net/"
+  public AzurePathSignalR:string = "https://thudentrylevel.azurewebsites.net/chart"
+  public LocalPath:string = "https://localhost:7263/"
+  public LocalPathSignalR:string = "https://localhost:7263/chart"
 
 }
 
