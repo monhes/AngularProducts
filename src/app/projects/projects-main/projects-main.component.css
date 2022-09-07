@@ -8,10 +8,10 @@ body {
 
 /* Style the header */
 .header {
-  background-color: #f1f1f1;
+  background-color: #bebebe;
   padding: 30px;
   text-align: center;
-  font-size: 35px;
+  font-size: 150%px;
 }
 
 /* Container for flexboxes */
@@ -32,7 +32,7 @@ body {
 /* Style the footer */
 .footer {
   background-color: #f1f1f1;
-  padding: 10px;
+  padding: 1%;
   text-align: center;
 }
 
@@ -43,3 +43,12 @@ body {
     flex-direction: column;
   }
 }
+
+.CProMainFonts{
+  font-size: x-large;
+  font-weight: 500;
+}
+.CProMainFonts p{
+  font-size: large;
+}
+

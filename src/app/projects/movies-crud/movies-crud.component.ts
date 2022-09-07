@@ -1,13 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; 
-import { FormControl ,FormGroup ,FormBuilder ,FormArray, Validators} from '@angular/forms';
-import * as signalR from '@microsoft/signalr';
-import { from, Observable } from 'rxjs';
-import { Movies } from 'src/app/Models/movies';
-import { DotnetPath } from 'src/app/services/local-path.service'
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators, Form } from '@angular/forms'; 
 import { LocalPathService } from 'src/app/services/local-path.service'
-import {MatDialog} from '@angular/material/dialog';
-import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MovieDetailComponent } from '../movie-detail/movie-detail.component'; 
+import { Movies} from 'src/app/Models/movies';
 
 
 @Component({
@@ -17,95 +14,184 @@ import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
 })
 export class MoviesCRUDComponent implements OnInit {
 
-  myForm:FormGroup;
-  myArrayForm:FormGroup;
-  movieForm:FormGroup; 
+  myArrayForm: FormGroup;
+  movieForm: FormGroup;
+  tempMovieForm: FormGroup;
+  deleteForm: FormGroup;
+  holdingDeleteForm: FormGroup;
+
+  holdtempdelete: Movies[] = []
+  deleteList: any[]
   moviesList: any = []
-  
-  MovieApiPath:string = this.path.AzurePath+'api/Moviesapi/'
 
-  constructor(private http: HttpClient, private fb:FormBuilder,public dialog: MatDialog,public path:LocalPathService) { 
-   }
+  resetSelected(){
+    this.holdtempdelete = []
+  }
 
-  ngOnInit(): void { 
-    
+  MovieApiPath: string = this.path.AzurePath + 'api/Moviesapi/'
+
+  constructor(private http: HttpClient, private fb: FormBuilder, public dialog: MatDialog, public path: LocalPathService) {
+  }
+
+  ngOnInit(): void {
+    this.deleteForm = this.fb.group({
+      deleteMovieTitle: '',
+      id: 0
+    })
+
     this.myArrayForm = this.fb.group({
-      email:'',
-      phones:this.fb.array([])
+      email: '',
+      phones: this.fb.array([])
     })
 
     this.movieForm = this.fb.group({
-      Title: ['',[Validators.required,Validators.minLength(3)]]
-      ,ReleaseDate:['',Validators.required]
-      ,Price:['',[Validators.required,Validators.min(1),Validators.max(100)]]
-      ,Genre:['',[Validators.required,Validators.pattern('^[A-Z]+[a-zA-Z\s]*$')]]
-      ,Rating:['',[Validators.required,Validators.pattern('^[A-Z]+[a-zA-Z0-9""\s-]*$') ,Validators.maxLength(1)]]
+      Title: ['', [Validators.required, Validators.minLength(3)]]
+      , ReleaseDate: ['', Validators.required]
+      , Price: ['', [Validators.required, Validators.min(1), Validators.max(100)]]
+      , Genre: ['', [Validators.required, Validators.pattern('^[A-Z]+[a-zA-Z\s]*$')]]
+      , Rating: ['', [Validators.required, Validators.pattern('^[A-Z]+[a-zA-Z0-9""\s-]*$'), Validators.maxLength(1)]]
     })
+
+    this.holdingDeleteForm = this.fb.group({
+      Title: ['', [Validators.required, Validators.minLength(3)]]
+      , ReleaseDate: ['', Validators.required]
+      , Price: ['', [Validators.required, Validators.min(1), Validators.max(100)]]
+      , Genre: ['', [Validators.required, Validators.pattern('^[A-Z]+[a-zA-Z\s]*$')]]
+      , Rating: ['', [Validators.required, Validators.pattern('^[A-Z]+[a-zA-Z0-9""\s-]*$'), Validators.maxLength(1)]]
+    })
+
+    this.tempMovieForm = this.movieForm
     this.getMovies();
   }//End ngOnInit
-  
-  get Title(){
+
+  get Title() {
     return this.movieForm.get('Title');
   }
-  get ReleaseDate(){
+  get ReleaseDate() {
     return this.movieForm.get('ReleaseDate');
   }
-  get Price(){
+  get Price() {
     return this.movieForm.get('Price');
   }
-  get Genre(){
+  get Genre() {
     return this.movieForm.get('Genre');
   }
-  get Rating(){
+  get Rating() {
     return this.movieForm.get('Rating');
-  } 
-  get phoneForms(){
+  }
+  get phoneForms() {
     return this.myArrayForm.get('phones') as FormArray
   }
 
+
   addPhone() {
     const phone = this.fb.group({
-      area:[]
+      area: []
     })
     this.phoneForms.push(phone);
   }
 
-  deletePhone(i:any){ 
+  deletePhone(i: any) {
     this.phoneForms.removeAt(i)
   }
 
-  getMovies(){
+  getMovies() {
     this.http.get<any>(this.MovieApiPath)
-    .subscribe(response => {this.moviesList = response;})
+      .subscribe(response => { this.moviesList = response; })
   }
 
-   deleteConfirmations(deleteId:any){
-    if(confirm("Are you sure to delete ")) {
-      let tempurl: string = this.MovieApiPath+deleteId 
-      this.http.delete(tempurl).subscribe(response => {this.getMovies(); console.warn(deleteId)})   
+  deleteConfirmations(deleteId: any) {
+    if (confirm("Are you sure to delete ")) {
+      let tempurl: string = this.MovieApiPath + deleteId
+      this.http.delete(tempurl).subscribe(response => { this.getMovies(); console.warn(deleteId) })
+      this.resetSelected()
     }
   }
 
-  postMovies(form:any){
-    console.log(form)
-    let tempurl: string = this.MovieApiPath
-    this.http.post(tempurl,form).subscribe((data)=>{this.getMovies();}) 
-    this.movieForm.reset();
+  multipleDelete(form: any) {
+    //console.warn("from checkbox", this.holdtempdelete)
+    if(this.holdtempdelete.length == 0)
+    {confirm("No Movies Selected")}
+    let tempurl: string = this.MovieApiPath + "DeleteMovies"
+    if(this.holdtempdelete.length != 0){
+      if (confirm("Are you sure to delete ")) {
+        this.http.post(tempurl, this.holdtempdelete).subscribe(response => { return this.getMovies(); })
+        this.resetSelected()
+      }
+    }
   }
 
+  checkValue(event: any) {
+    let checkduplicate: boolean = false
+    //new model version
+    if ((event.target).checked) {
+      if (this.holdtempdelete.length === 0) {
+        this.holdtempdelete.push({ id: (event.target).value, title: undefined, releaseDate: undefined, price: undefined, genre:undefined, rating: undefined })
+      }
+      else {
+        for (let item of this.holdtempdelete) {
+          if (item.id === (event.target).value) {
+            checkduplicate = true
+          }
+        }
+        if (checkduplicate === false) {
+          this.holdtempdelete.push({ id: (event.target).value,title: undefined, releaseDate: undefined, price: undefined, genre: undefined, rating: undefined })
+        }
+      }
+    }
+    else if ((event.target).checked === false) {
+      this.holdtempdelete = this.holdtempdelete.filter((data) => { return data.id != (event.target).value })
+    } 
 
-  updateMovies(){
-    
-  } 
-    
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
-  openDialog(id:number) {
+
+
+    // if((event.target).checked){ 
+    //   if(this.tempdelete.length === 0){
+    //     this.tempdelete.push({isChecked:(event.target).checked,id:(event.target).value,title:""})
+    //   }
+    //   else{
+    //     for(let item of this.tempdelete){
+    //       if(item.id === (event.target).value)
+    //       {
+    //         checkduplicate = true
+    //       }
+    //     }
+    //     if(checkduplicate === false)
+    //     {
+    //       this.tempdelete.push({isChecked:(event.target).checked,id:(event.target).value,title:""})
+    //     }
+    //   }
+    // }
+    // else if((event.target).checked === false){ 
+    //   this.tempdelete = this.tempdelete.filter((data) => { return data.id != (event.target).value})
+    // }
+    // console.log(this.tempdelete) 
+  }
+
+  postMovies(form: any) {
+    console.log(form)
+    let tempurl: string = this.MovieApiPath + "PostMovie"
+    this.http.post(tempurl, form).subscribe((data) => { this.getMovies(); })
+    this.movieForm.reset();
+    this.resetSelected()
+  }
+
+  updateMovies() {
+
+  }
+
+  openDialog(id: number) {
     let tempurl: string = this.MovieApiPath + id
     const dialogRef = this.dialog.open(MovieDetailComponent);
     dialogRef.afterClosed().subscribe(result => {
-      result.id = id 
-      this.http.put(tempurl,result).subscribe((data)=>{this.getMovies()})
+      if(result != undefined){
+        result.id = id
+        this.http.put(tempurl, result).subscribe((data) => { this.getMovies() })
+      }
     });
+    this.resetSelected()
   }
 
 }
