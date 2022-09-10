@@ -1,7 +1,7 @@
  
 
     <div *ngFor="let chat of userMessage" class="chatMessage">
-      Message : => {{chat.user}} : {{chat.message}}
+       User : {{chat.user}} => " {{chat.message}} "
     </div>
     <div class='messageInput'>
       <form [formGroup]="checkoutForm" (ngSubmit)="sendMessage()">

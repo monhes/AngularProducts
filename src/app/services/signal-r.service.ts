@@ -10,15 +10,14 @@ import {LocalPathService} from './local-path.service';
   providedIn: 'root'
 })
 export class SignalRService {
-public serUserMessage: UserMessage[] = [];
-public data: ChartModel[] = [];
-public setMessage: any;
-  constructor(private urlpath:LocalPathService){
+  public serUserMessage: UserMessage[] = [];
+  public data: ChartModel[] = [];
+  public setMessage: any;
+  constructor(private urlpath:LocalPathService){}
 
-  }
-public hubConnection:signalR.HubConnection = new signalR.HubConnectionBuilder()
+  public hubConnection:signalR.HubConnection = new signalR.HubConnectionBuilder()
   .withUrl(this.urlpath.AzurePathSignalR)
-  .build();
+    .build();
    
   public startConection =()=>{
     console.log('start connection')
@@ -32,5 +31,5 @@ public hubConnection:signalR.HubConnection = new signalR.HubConnectionBuilder()
       this.data = data
       console.log(data);
     })
-  } 
+  }
 }

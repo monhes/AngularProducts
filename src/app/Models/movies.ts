@@ -2,9 +2,9 @@
 
 export interface Movies {
     id:          number;
-    title:       string;
-    releaseDate: string;
-    price:       number;
-    genre:       string;
-    rating:      string;
+    title:       string | undefined;
+    releaseDate: string | undefined;
+    price:       number | undefined;
+    genre:       string | undefined; 
+    rating:      string | undefined;
 }
