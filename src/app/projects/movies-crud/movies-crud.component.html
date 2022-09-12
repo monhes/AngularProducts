@@ -2,8 +2,8 @@
     <div class="grid-movie" > 
         Movies List
         <form [formGroup]="deleteForm">
-            <div *ngIf="moviesList != null" class="grid-container">
-                <div *ngFor="let movie of moviesList" class="column movie-card grid-movie"> 
+            <div *ngIf="moviesListObs != null" class="grid-container">
+                <div *ngFor="let movie of (moviesListObs | async)" class="column movie-card grid-movie"> 
                         <input type="checkbox"  [value]="movie.id" (change)="checkValue($event)" />
 
                         <div style="margin: 3%;">

@@ -5,6 +5,7 @@ import { LocalPathService } from 'src/app/services/local-path.service'
 import { MatDialog } from '@angular/material/dialog';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component'; 
 import { Movies} from 'src/app/Models/movies';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class MoviesCRUDComponent implements OnInit {
   deleteForm: FormGroup;
   holdingDeleteForm: FormGroup;
 
+  moviesListObs: Observable<Movies[]>;//obser
   holdtempdelete: Movies[] = []
   deleteList: any[]
   moviesList: any = []
@@ -96,6 +98,7 @@ export class MoviesCRUDComponent implements OnInit {
   }
 
   getMovies() {
+    this.moviesListObs = this.http.get<any>(this.MovieApiPath)//obser
     this.http.get<any>(this.MovieApiPath)
       .subscribe(response => { this.moviesList = response; })
   }
