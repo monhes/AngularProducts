@@ -31,7 +31,7 @@ export class MoviesCRUDComponent implements OnInit {
     this.holdtempdelete = []
   }
 
-  MovieApiPath: string = this.path.LocalPath + 'api/Moviesapi/'
+  MovieApiPath: string = this.path.AzurePath + 'api/Moviesapi/'
 
   constructor(
     private http: HttpClient, 
