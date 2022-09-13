@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators, Form } from '@angular/forms'; 
 import { LocalPathService } from 'src/app/services/local-path.service'
@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component'; 
 import { Movies} from 'src/app/Models/movies';
 import { Observable } from 'rxjs';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 
 @Component({
@@ -30,12 +31,20 @@ export class MoviesCRUDComponent implements OnInit {
     this.holdtempdelete = []
   }
 
-  MovieApiPath: string = this.path.AzurePath + 'api/Moviesapi/'
+  MovieApiPath: string = this.path.LocalPath + 'api/Moviesapi/'
 
-  constructor(private http: HttpClient, private fb: FormBuilder, public dialog: MatDialog, public path: LocalPathService) {
-  }
+  constructor(
+    private http: HttpClient, 
+    private fb: FormBuilder, 
+    public dialog: MatDialog,
+    public path: LocalPathService,
+    public loaderService:LoaderService
+    ) 
+    {}
 
   ngOnInit(): void {
+    this.loaderService.isLoading.next(true);
+
     this.deleteForm = this.fb.group({
       deleteMovieTitle: '',
       id: 0
@@ -98,9 +107,11 @@ export class MoviesCRUDComponent implements OnInit {
   }
 
   getMovies() {
+    var res:any
     this.moviesListObs = this.http.get<any>(this.MovieApiPath)//obser
-    this.http.get<any>(this.MovieApiPath)
-      .subscribe(response => { this.moviesList = response; })
+    //this.http.get<HttpEvent<ArrayBuffer>>(this.MovieApiPath).pipe()
+    // this.http.get<any>(this.MovieApiPath)
+    //   .subscribe(response => { this.moviesList = response; })
   }
 
   deleteConfirmations(deleteId: any) {
@@ -114,10 +125,10 @@ export class MoviesCRUDComponent implements OnInit {
   multipleDelete(form: any) {
     //console.warn("from checkbox", this.holdtempdelete)
     if(this.holdtempdelete.length == 0)
-    {confirm("No Movies Selected")}
+    {confirm("No Selected Movies")}
     let tempurl: string = this.MovieApiPath + "DeleteMovies"
     if(this.holdtempdelete.length != 0){
-      if (confirm("Are you sure to delete ")) {
+      if (confirm("Are you sure to delete selected Movies")) {
         this.http.post(tempurl, this.holdtempdelete).subscribe(response => { return this.getMovies(); })
         this.resetSelected()
       }
