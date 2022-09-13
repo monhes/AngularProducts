@@ -22,6 +22,7 @@ import { CachingInterceptor } from './interceptors/caching.interceptor';
 import { MoviesCRUDComponent } from './projects/movies-crud/movies-crud.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MovieDetailComponent } from './projects/movie-detail/movie-detail.component';
+import { ErrorNoticePopUpComponent } from './error-notice-pop-up/error-notice-pop-up.component';
 
 //angularMaterial
 import {MatInputModule} from '@angular/material/input';
@@ -29,6 +30,13 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+
+
+
+ 
 
 @NgModule({
   declarations: [
@@ -44,7 +52,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     ProjectsMainComponent,
     ChatPageComponent,
     MoviesCRUDComponent,
-    MovieDetailComponent
+    MovieDetailComponent,
+    ErrorNoticePopUpComponent
   ],
   imports: [
     FormsModule,
@@ -54,6 +63,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     TestRequestModule,
     AppRoutingModule,
     RouterModule.forRoot([
+       
       {path: 'products', component: ProductListComponent},
       {path: 'products/:productId', component: ProductDetailsComponent },
       {path: 'cart', component: CartComponent },
@@ -70,7 +80,9 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,
