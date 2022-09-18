@@ -1,12 +1,13 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators, Form } from '@angular/forms'; 
 import { LocalPathService } from 'src/app/services/local-path.service'
 import { MatDialog } from '@angular/material/dialog';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component'; 
 import { Movies} from 'src/app/Models/movies';
-import { Observable } from 'rxjs';
+import { catchError, from, Observable, of } from 'rxjs';
 import { LoaderService } from 'src/app/loader/loader.service';
+import { ErrorNoticePopUpComponent } from 'src/app/error-notice-pop-up/error-notice-pop-up.component';
 
 
 @Component({
@@ -106,12 +107,28 @@ export class MoviesCRUDComponent implements OnInit {
     this.phoneForms.removeAt(i)
   }
 
-  getMovies() {
-    var res:any
-    this.moviesListObs = this.http.get<any>(this.MovieApiPath)//obser
-    //this.http.get<HttpEvent<ArrayBuffer>>(this.MovieApiPath).pipe()
-    // this.http.get<any>(this.MovieApiPath)
-    //   .subscribe(response => { this.moviesList = response; })
+  message:any
+  getMovies() { 
+
+      // this.http.get<any>(this.MovieApiPath).pipe().subscribe((response)=>{this.moviesList = response;(err:HttpErrorResponse)=>{if (err instanceof Error) {
+      //   // client-side error
+      //   this.message = `An error occured ${err.error.message}`;
+      //   console.warn("clientres err",this.message)
+      // } else {
+      //   this.message = `Backend returned error code ${err.status}, body was: ${err.message}`;
+      //   console.warn("serverres err",this.message)
+      // }}})
+
+       this.http.get<any>(this.MovieApiPath).pipe().subscribe({
+        next: (response)=>{this.moviesListObs = of(response)}
+        ,error: (err:any)=>{if (err instanceof HttpErrorResponse) {
+          this.dialog.open(ErrorNoticePopUpComponent,{data:{message:'Server not response,Try again later.'}});
+        } else if(err instanceof Error) {
+          // client-side error 
+          this.dialog.open(ErrorNoticePopUpComponent,{data:{message:`An error occured ${err}`}});
+        }
+      }
+      }) 
   }
 
   deleteConfirmations(deleteId: any) {

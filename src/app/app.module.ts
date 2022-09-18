@@ -24,6 +24,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MovieDetailComponent } from './projects/movie-detail/movie-detail.component';
 import { ErrorNoticePopUpComponent } from './error-notice-pop-up/error-notice-pop-up.component';
 
+//Intorcepter
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
+
 //angularMaterial
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -86,8 +89,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi:true},
+    {provide: HTTP_INTERCEPTORS,
     useClass: CachingInterceptor,
-    multi:true}
+    multi:true},
+    
   ],
   bootstrap: [AppComponent]
 })
